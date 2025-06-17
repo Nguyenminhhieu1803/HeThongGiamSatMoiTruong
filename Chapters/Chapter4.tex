@@ -1,0 +1,27 @@
+% Chương 4
+
+\chapter{KẾT LUẬN VÀ ĐỊNH HƯỚNG PHÁT TRIỂN} % Tên của chương
+
+\label{Chapter4} % Để trích dẫn chương này ở chỗ nào đó trong bài, hãy sử dụng lệnh \ref{Chapter4} 
+
+%----------------------------------------------------------------------------------------
+
+\section{Kết luận}
+Báo cáo này đã trình bày chi tiết quá trình thiết kế và triển khai một hệ thống giám sát nhiệt độ và độ ẩm thông minh sử dụng \file{ESP32}, cảm biến \keyword{DHT11}, cùng với một \keyword{backend} \code{PHP/MySQL} và \keyword{frontend} \code{HTML/CSS/JavaScript}. Hệ thống đã đạt được các mục tiêu đề ra ban đầu, bao gồm:
+\begin{itemize}
+	\item Thu thập và hiển thị dữ liệu nhiệt độ và độ ẩm theo thời gian thực một cách hiệu quả.
+	\item Cung cấp giao diện web trực quan để theo dõi dữ liệu hiện tại, lịch sử và thiết lập cảnh báo.
+	\item Hỗ trợ chức năng điều khiển bật/tắt cảm biến từ xa.
+\end{itemize}
+Mặc dù hệ thống vẫn còn một số hạn chế về độ ổn định kết nối và khả năng hoạt động liên tục, nhưng nó đã chứng minh được tính khả thi và tiềm năng ứng dụng trong việc giám sát chất lượng môi trường trong nhà.
+
+\section{Định hướng phát triển và cải tiến trong tương lai}
+Dựa trên những kết quả đạt được và các thách thức đã nhận diện, hệ thống có thể được phát triển và cải tiến theo các hướng sau:
+\begin{itemize}
+	\item \textbf{Mở rộng thông số giám sát}: Tích hợp thêm các loại cảm biến môi trường khác như cảm biến bụi (\keyword{PM2.5}, \keyword{PM10}), cảm biến khí \keyword{CO2}, cảm biến khí độc, tiếng ồn, ánh sáng, hoặc thậm chí là cảm biến còi để có cái nhìn toàn diện hơn về môi trường.
+	\item \textbf{Nâng cấp giao diện web và tính năng}: Phát triển thêm các chức năng như quản lý nhiều thiết bị từ một giao diện, phân quyền người dùng (admin, người dùng thường), tạo báo cáo tùy chỉnh, hoặc tích hợp bản đồ hiển thị vị trí các cảm biến.
+	\item \textbf{Tích hợp nền tảng đám mây}: Thay vì chỉ lưu trữ trên \keyword{localhost}, dữ liệu nên được đẩy lên các dịch vụ \keyword{IoT} \keyword{cloud} (ví dụ: \code{ThingSpeak}, \code{Firebase}, \code{AWS IoT}, \code{Google Cloud IoT}). Điều này không chỉ giải quyết vấn đề về bộ nhớ mà còn cho phép truy cập và phân tích dữ liệu từ mọi nơi, mọi lúc.
+	\item \textbf{Cải thiện độ ổn định và quản lý năng lượng}: Nghiên cứu các giải pháp phần cứng và \keyword{firmware} để tối ưu hóa việc tiêu thụ năng lượng của \file{ESP32}, kéo dài thời gian hoạt động liên tục. Đồng thời, tìm cách cải thiện độ ổn định của kết nối \keyword{Wi-Fi} hoặc xem xét các công nghệ truyền thông khác phù hợp hơn (\code{LoRa}, \code{NB-IoT}) cho các ứng dụng cần tầm xa hoặc tiêu thụ năng lượng cực thấp.
+	\item \textbf{Phân tích dữ liệu nâng cao}: Triển khai các thuật toán xử lý tín hiệu để lọc nhiễu từ cảm biến, và áp dụng các phương pháp phân tích dữ liệu (ví dụ: học máy) để dự đoán xu hướng ô nhiễm hoặc phát hiện các sự kiện bất thường một cách tự động.
+\end{itemize}
+Những định hướng này sẽ giúp hệ thống trở nên mạnh mẽ, đáng tin cậy và có khả năng ứng dụng rộng rãi hơn trong tương lai.

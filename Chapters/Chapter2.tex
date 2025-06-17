@@ -1,0 +1,111 @@
+% Chương 2
+
+\chapter{THIẾT KẾ VÀ TRIỂN KHAI HỆ THỐNG} % Tên của chương
+
+\label{Chapter2} % Để trích dẫn chương này ở chỗ nào đó trong bài, hãy sử dụng lệnh \ref{Chapter2} 
+
+%----------------------------------------------------------------------------------------
+
+\section{Kiến trúc tổng thể của hệ thống}
+Hệ thống giám sát nhiệt độ và độ ẩm thông minh được xây dựng theo kiến trúc IoT cơ bản, bao gồm các lớp cảm biến, xử lý dữ liệu tại biên, truyền thông, máy chủ và giao diện người dùng. Dữ liệu di chuyển tuần tự qua các lớp này để đảm bảo việc thu thập, xử lý và hiển thị thông tin môi trường một cách liền mạch.
+
+\begin{figure}[hbtp]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Figures/architectural_diagram.png} % Thay thế bằng sơ đồ khối thực tế của bạn
+	\caption{Sơ đồ kiến trúc tổng thể của hệ thống giám sát nhiệt độ và độ ẩm}
+	\label{fig:architecture}
+\end{figure}
+
+Sơ đồ kiến trúc tổng thể của hệ thống được minh họa trong Hình~\ref{fig:architecture}.
+\begin{itemize}
+	\item \textbf{Lớp cảm biến}: Bao gồm cảm biến \keyword{DHT11} để thu thập dữ liệu nhiệt độ và độ ẩm.
+	\item \textbf{Lớp biên (Edge Layer)}: \file{ESP32} xử lý dữ liệu thô từ cảm biến, đồng bộ thời gian và điều khiển \keyword{LED}.
+	\item \textbf{Lớp truyền thông}: \file{ESP32} sử dụng kết nối \keyword{Wi-Fi} để gửi dữ liệu lên máy chủ cục bộ.
+	\item \textbf{Lớp máy chủ (Server Layer)}: Máy chủ \keyword{localhost} (\code{XAMPP}) với \code{PHP} và \code{MySQL} nhận, lưu trữ và xử lý dữ liệu, đồng thời cung cấp các \keyword{API} cho giao diện web.
+	\item \textbf{Lớp giao diện người dùng}: Ứng dụng web (\code{HTML/CSS/JavaScript}) cung cấp giao diện trực quan cho người dùng theo dõi và tương tác với hệ thống.
+\end{itemize}
+
+\section{Thiết kế phần cứng}
+\subsection{Sơ đồ mạch kết nối cảm biến và ESP32}
+Phần cứng của hệ thống được thiết kế để đảm bảo sự nhỏ gọn và hiệu quả. Cảm biến \keyword{DHT11} được kết nối với chân \code{GPIO4} của \file{ESP32}. Ngoài ra, một \keyword{LED} màu xanh lá cây được kết nối với \code{GPIO15} để báo hiệu trạng thái hoạt động/đang đo, và một \keyword{LED} màu đỏ được kết nối với \code{GPIO13} để báo hiệu cảnh báo khi nhiệt độ hoặc độ ẩm vượt ngưỡng. Nguồn điện \code{5V} được cấp thông qua adapter.
+
+\begin{figure}[hbtp]
+	\centering
+	\includegraphics[width=0.7\textwidth]{Figures/circuit_diagram.png} % Thay thế bằng sơ đồ mạch thực tế của bạn
+	\caption{Sơ đồ mạch kết nối cảm biến DHT11 và ESP32}
+	\label{fig:circuit}
+\end{figure}
+Sơ đồ mạch chi tiết được trình bày trong Hình~\ref{fig:circuit}.
+
+\subsection{Lựa chọn linh kiện và lý do}
+\begin{itemize}
+	\item \textbf{Cảm biến DHT11}: Được lựa chọn vì tính phổ biến, chi phí thấp, và khả năng đo đồng thời nhiệt độ và độ ẩm, phù hợp cho các ứng dụng giám sát môi trường trong nhà cơ bản.
+	\item \textbf{Vi điều khiển ESP32}: Là lựa chọn tối ưu nhờ tích hợp \keyword{Wi-Fi} và \keyword{Bluetooth}, khả năng xử lý mạnh mẽ, tiết kiệm năng lượng và cộng đồng hỗ trợ lớn. Điều này giúp đơn giản hóa việc truyền dữ liệu không dây và tích hợp các tính năng khác trong tương lai.
+\end{itemize}
+
+\section{Thiết kế phần mềm}
+\subsection{Thiết kế Firmware trên ESP32}
+Firmware cho \file{ESP32} được phát triển bằng ngôn ngữ \code{C/C++} trên nền tảng \code{Arduino IDE}.
+\begin{itemize}
+	\item \textbf{Thu thập dữ liệu}: Đọc giá trị nhiệt độ và độ ẩm từ \keyword{DHT11}.
+	\item \textbf{Đồng bộ thời gian}: Sử dụng thư viện \code{NTPClient} để đồng bộ thời gian từ các máy chủ \code{NTP} công cộng (\code{vn.pool.ntp.org}), đảm bảo dữ liệu có \keyword{timestamp} chính xác.
+	\item \textbf{Điều khiển hoạt động}: Định kỳ gửi yêu cầu \keyword{HTTP GET} đến \code{API} \file{api/get\_dht\_status.php} để kiểm tra trạng thái bật/tắt đo từ máy chủ. Nếu tính năng đo bị tắt, \file{ESP32} sẽ ngừng gửi dữ liệu và tắt \keyword{LED} thông báo.
+	\item \textbf{Gửi dữ liệu}: Đóng gói dữ liệu nhiệt độ, độ ẩm, \keyword{device\_id} và \keyword{timestamp} vào định dạng \keyword{JSON} và gửi lên máy chủ qua \keyword{HTTP POST} đến \file{post\_data.php}.
+	\item \textbf{Điều khiển LED}: Điều khiển \keyword{LED} xanh lá sáng khi đang đo và \keyword{LED} đỏ sáng khi các thông số vượt ngưỡng cảnh báo (ngưỡng được lấy từ \file{api/get\_alert\_thresholds.php}).
+\end{itemize}
+
+\subsection{Thiết kế Backend và Cơ sở dữ liệu}
+Hệ thống \keyword{backend} được xây dựng trên môi trường \code{XAMPP} (bao gồm \code{Apache} làm web server và \code{MySQL} làm cơ sở dữ liệu) với ngôn ngữ \code{PHP}. Cấu trúc thư mục của hệ thống \keyword{backend} được tổ chức như sau:
+
+\begin{itemize}
+	\item \file{xampp/htdocs/TH\_DO\_AN/}: Chứa các file giao diện chính và các API cấp cao.
+	\item \file{xampp/htdocs/TH\_DO\_AN/api/}: Chứa các API con liên quan đến quản lý dữ liệu và thiết bị.
+	\item \file{xampp/htdocs/Login/}: Chứa các file liên quan đến chức năng đăng nhập/đăng ký.
+	\item \file{xampp/htdocs/Login/api/users/}: Chứa các API liên quan đến quản lý người dùng.
+\end{itemize}
+
+\begin{itemize}
+	\item \textbf{Cơ sở dữ liệu \code{MySQL}}:
+	\begin{itemize}
+		\item Bảng \code{sensor\_readings}: Lưu trữ các bản ghi dữ liệu nhiệt độ, độ ẩm, \keyword{timestamp} và \keyword{device\_id} từ \file{ESP32}.
+		\item Bảng \code{device\_settings}: Lưu trữ các cài đặt của thiết bị như trạng thái bật/tắt đo (\code{dht\_enabled}) và các ngưỡng cảnh báo (\code{temp\_threshold}, \code{humidity\_threshold}).
+		\item Các bảng khác liên quan đến người dùng (từ thư mục \file{Login}), ví dụ: bảng \code{users} để lưu thông tin đăng nhập.
+	\end{itemize}
+	\item \textbf{Các \keyword{API} \code{PHP} chính}:
+	\begin{itemize}
+		\item \file{post\_data.php} (trong \file{TH\_DO\_AN/}): Nhận dữ liệu \keyword{JSON} từ \file{ESP32} và chèn vào bảng \code{sensor\_readings}.
+		\item \file{get\_current\_data.php} (trong \file{TH\_DO\_AN/}): Truy vấn và trả về dữ liệu mới nhất.
+		\item \file{get\_history\_data.php} (trong \file{TH\_DO\_AN/}): Truy vấn và trả về dữ liệu lịch sử theo khoảng thời gian.
+		\item \file{api/export\_data\_csv.php} (trong \file{TH\_DO\_AN/api/}) : Tạo và xuất file \file{CSV} từ dữ liệu lịch sử.
+		\item \file{api/get\_dht\_status.php} (trong \file{TH\_DO\_AN/api/}): Trả về trạng thái bật/tắt đo cho \file{ESP32}.
+		\item \file{api/toggle\_dht\_status.php} (trong \file{TH\_DO\_AN/api/}): Cập nhật trạng thái bật/tắt đo từ giao diện web.
+		\item \file{api/save\_alert\_thresholds.php} (trong \file{TH\_DO\_AN/api/}): Lưu các ngưỡng cảnh báo.
+		\item \file{api/get\_alert\_thresholds.php} (trong \file{TH\_DO\_AN/api/}): Trả về các ngưỡng cảnh báo đã lưu.
+		\item \file{api/get\_devices.php} (trong \file{TH\_DO\_AN/api/}): Cung cấp danh sách các \keyword{device\_id}.
+		\item \file{api/save\_email\_settings.php}, \file{api/save\_update\_frequency.php}, \file{api/get\_update\_frequency.php}: Các API cấu hình khác.
+		\item Các API liên quan đến người dùng (trong \file{Login/api/users/}) như \file{login.php}, \file{register.php}, \file{check\_login.php}, \file{logout.php}.
+	\end{itemize}
+\end{itemize}
+
+\subsection{Thiết kế Frontend và Giao diện người dùng}
+Giao diện người dùng được xây dựng bằng \code{HTML}, \code{CSS} và \code{JavaScript}, chạy trên trình duyệt web, cung cấp một cái nhìn trực quan và khả năng tương tác với hệ thống. Cấu trúc file giao diện chính bao gồm \file{index.php}, \file{main.css}, \file{main.js}, và \file{dashboard\_template.html} trong thư mục \file{TH\_DO\_AN/}. Các file liên quan đến đăng nhập/đăng ký nằm trong thư mục \file{Login/}.
+
+\begin{itemize}
+	\item \textbf{Trang "Dữ liệu Hiện Tại"}: Hiển thị các giá trị nhiệt độ và độ ẩm mới nhất dưới dạng thẻ lớn, cùng với thời gian cập nhật gần nhất.
+	\item \textbf{Trang "Lịch sử Dữ liệu"}: Cho phép người dùng chọn khoảng thời gian (ví dụ: 1 giờ) và hiển thị dữ liệu lịch sử dưới dạng biểu đồ đường tương tác, sử dụng thư viện \code{Chart.js} và \code{Luxon}.
+	\item \textbf{Trang "Cảnh Báo"}: Cho phép người dùng nhập và lưu các ngưỡng cảnh báo cho nhiệt độ và độ ẩm. Trang này cũng hiển thị trạng thái hiện tại (Bình thường/Vượt ngưỡng) và kích hoạt hiệu ứng nhấp nháy đỏ trên giao diện khi có cảnh báo.
+	\item \textbf{Trang "Thông tin thiết bị"}: Cung cấp thông tin chi tiết về cảm biến \keyword{DHT11} và cách nó hoạt động.
+	\item \textbf{Chức năng đăng nhập/đăng ký}: Sử dụng \file{login\_register.html} và các file \code{CSS/JS} liên quan (\file{auth\_styles.css}, \file{auth\_script.js}) để quản lý người dùng.
+	\item \textbf{Tính năng điều khiển}: Nút "Đang đo" trên giao diện cho phép gửi lệnh đến \code{API} \file{api/toggle\_dht\_status.php} để bật hoặc tắt chức năng đo của cảm biến \file{ESP32}.
+\end{itemize}
+
+\section{Quy trình triển khai}
+\begin{itemize}
+	\item \textbf{Cài đặt môi trường máy chủ}: Cài đặt \code{XAMPP} trên máy tính cục bộ để thiết lập môi trường \code{Apache}, \code{PHP} và \code{MySQL}.
+	\item \textbf{Tạo cơ sở dữ liệu và bảng biểu}: Tạo cơ sở dữ liệu \code{dht\_sensor\_db} và các bảng \code{sensor\_readings}, \code{device\_settings}, \code{users} (cho chức năng đăng nhập) theo cấu trúc đã thiết kế.
+	\item \textbf{Triển khai Backend và Frontend}: Đặt các thư mục \file{TH\_DO\_AN/} và \file{Login/} vào thư mục \code{htdocs} của \code{XAMPP}. Đảm bảo các file \file{config\_cors.php} cũng được đặt đúng vị trí nếu có.
+	\item \textbf{Lắp ráp phần cứng}: Kết nối cảm biến \keyword{DHT11} và \keyword{LED} với các chân \code{GPIO} tương ứng trên \file{ESP32}.
+	\item \textbf{Nạp Firmware}: Nạp \keyword{firmware} đã biên dịch vào \file{ESP32} bằng \code{Arduino IDE}.
+	\item \textbf{Cấu hình mạng Wi-Fi}: Cấu hình \file{ESP32} để kết nối với mạng \keyword{Wi-Fi} cục bộ (ví dụ: điểm phát sóng từ điện thoại \code{Redmi Note 12 Pro}).
+	\item \textbf{Kiểm thử và hiệu chuẩn}: Kiểm tra toàn bộ luồng dữ liệu, chức năng hiển thị, cảnh báo và điều khiển, cũng như chức năng đăng nhập/đăng ký để đảm bảo hệ thống hoạt động chính xác.
+\end{itemize}

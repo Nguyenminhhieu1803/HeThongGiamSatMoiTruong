@@ -1,0 +1,65 @@
+% Chương 3
+
+\chapter{KẾT QUẢ VÀ ĐÁNH GIÁ HỆ THỐNG} % Tên của chương
+
+\label{Chapter3} % Để trích dẫn chương này ở chỗ nào đó trong bài, hãy sử dụng lệnh \ref{Chapter3} 
+
+%----------------------------------------------------------------------------------------
+
+\section{Dữ liệu thu thập và hiển thị}
+Hệ thống đã được triển khai và hoạt động liên tục, thu thập dữ liệu nhiệt độ và độ ẩm từ cảm biến \keyword{DHT11} tại môi trường trong nhà. Dữ liệu này được truyền về máy chủ cục bộ và hiển thị thông qua giao diện web trực quan.
+
+\subsection{Hiển thị dữ liệu thời gian thực}
+Giao diện "Dữ liệu Hiện Tại" cung cấp một cái nhìn nhanh chóng về điều kiện môi trường. Nhiệt độ và độ ẩm được hiển thị rõ ràng dưới dạng các thẻ lớn, cùng với thời gian cập nhật gần nhất.
+
+\begin{figure}[hbtp]
+	\centering
+	\includegraphics[width=0.9\textwidth]{Figures/current_data_interface.png} % Thay thế bằng ảnh chụp màn hình thực tế của bạn
+	\caption{Giao diện hiển thị dữ liệu hiện tại}
+	\label{fig:current_data}
+\end{figure}
+Hình~\ref{fig:current_data} minh họa giao diện hiển thị dữ liệu hiện tại.
+
+\subsection{Lịch sử dữ liệu và biểu đồ}
+Tính năng "Lịch sử Dữ liệu" cho phép người dùng xem biểu đồ biến động của nhiệt độ và độ ẩm theo thời gian. Người dùng có thể chọn khoảng thời gian cụ thể (ví dụ: 1 giờ) để phân tích xu hướng. Biểu đồ tương tác giúp dễ dàng nhận diện các thay đổi.
+
+\begin{figure}[hbtp]
+	\centering
+	\includegraphics[width=0.9\textwidth]{Figures/history_data_chart.png} % Thay thế bằng ảnh chụp màn hình thực tế của bạn
+	\caption{Biểu đồ lịch sử dữ liệu nhiệt độ và độ ẩm}
+	\label{fig:history_data}
+\end{figure}
+Hình~\ref{fig:history_data} thể hiện biểu đồ lịch sử dữ liệu. Ngoài ra, hệ thống hỗ trợ xuất dữ liệu lịch sử ra file \file{CSV} để tiện cho việc phân tích offline.
+
+\section{Tính năng cảnh báo và điều khiển}
+\subsection{Thiết lập ngưỡng và trạng thái cảnh báo}
+Hệ thống cung cấp trang "Cảnh Báo" nơi người dùng có thể thiết lập các ngưỡng an toàn cho nhiệt độ và độ ẩm. Khi dữ liệu đo được vượt quá các ngưỡng này, giao diện web sẽ tự động hiển thị trạng thái "Vượt ngưỡng" và kích hoạt hiệu ứng nhấp nháy đỏ trên các thẻ hiển thị dữ liệu để cảnh báo trực quan.
+
+\begin{figure}[hbtp]
+	\centering
+	\includegraphics[width=0.9\textwidth]{Figures/alert_settings_interface.png} % Thay thế bằng ảnh chụp màn hình thực tế của bạn
+	\caption{Giao diện thiết lập ngưỡng và trạng thái cảnh báo}
+	\label{fig:alert_settings}
+\end{figure}
+Giao diện thiết lập cảnh báo được thể hiện trong Hình~\ref{fig:alert_settings}.
+
+\subsection{Điều khiển bật/tắt cảm biến}
+Một tính năng tiện lợi của hệ thống là khả năng điều khiển bật/tắt việc thu thập dữ liệu của cảm biến trực tiếp từ giao diện web. Nút "Đang đo" (hoặc tương tự) cho phép người dùng tạm dừng hoặc tiếp tục hoạt động của cảm biến \file{ESP32}, giúp tiết kiệm năng lượng hoặc khi không cần giám sát.
+
+\section{Đánh giá hiệu quả hoạt động}
+\subsection{Ưu điểm}
+\begin{itemize}
+	\item \textbf{Chi phí thấp và dễ triển khai}: Sử dụng các linh kiện phổ biến như \keyword{DHT11} và \file{ESP32}, cùng nền tảng \code{XAMPP} miễn phí, giúp giảm đáng kể chi phí tổng thể của hệ thống.
+	\item \textbf{Giao diện trực quan và thân thiện}: Giao diện web được thiết kế đơn giản, dễ hiểu, cho phép người dùng cuối dễ dàng theo dõi và tương tác mà không cần kiến thức chuyên sâu.
+	\item \textbf{Giám sát thời gian thực và lịch sử}: Cung cấp cái nhìn toàn diện về môi trường hiện tại và khả năng phân tích xu hướng dài hạn.
+	\item \textbf{Tính năng cảnh báo và điều khiển}: Nâng cao khả năng phản ứng và quản lý môi trường, giúp người dùng kịp thời nhận biết và xử lý các vấn đề.
+\end{itemize}
+
+\subsection{Hạn chế và thách thức đã gặp phải}
+Trong quá trình triển khai và vận hành hệ thống, một số thách thức đã được ghi nhận:
+\begin{itemize}
+	\item \textbf{Hoạt động không liên tục và kết nối WiFi không ổn định}: Hệ thống gặp khó khăn trong việc duy trì hoạt động liên tục trong thời gian dài và kết nối \keyword{Wi-Fi} giữa \file{ESP32} và máy chủ \keyword{localhost} đôi khi không ổn định. Điều này có thể do các yếu tố như nhiễu sóng, phạm vi phủ sóng hạn chế hoặc vấn đề về quản lý năng lượng trên \file{ESP32}.
+	\item \textbf{Độ chính xác và độ bền của cảm biến}: \keyword{DHT11} là cảm biến cơ bản, có thể có giới hạn về độ chính xác và độ bền trong các môi trường khắc nghiệt hơn hoặc yêu cầu giám sát chặt chẽ.
+	\item \textbf{Phạm vi giám sát}: Hiện tại hệ thống chỉ hoạt động trong mạng cục bộ (\keyword{localhost}), hạn chế khả năng truy cập dữ liệu từ xa.
+	\item \textbf{Xử lý dữ liệu nâng cao}: Hệ thống chưa tích hợp các thuật toán phức tạp hơn để lọc nhiễu dữ liệu hoặc phân tích dự đoán chuyên sâu.
+\end{itemize}

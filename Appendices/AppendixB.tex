@@ -1,0 +1,59 @@
+% Phụ lục B
+
+\chapter{LIỆT KÊ SOURCE CODE} % Tên của phụ lục
+
+\label{AppendixB} % Để trích dẫn chương này ở chỗ nào đó trong bài, hãy sử dụng lệnh \ref{AppendixB} 
+
+%----------------------------------------------------------------------------------------
+
+\section{Mã nguồn Firmware ESP32}
+Mã nguồn \keyword{firmware} được nạp vào \file{ESP32} để thực hiện các chức năng thu thập dữ liệu, điều khiển \keyword{LED} và truyền thông.
+\lstinputlisting[style=codeC]{"Code/test-do-an-led.ino"} % Thay "esp32_firmware.ino" bằng tên file thực tế của bạn
+
+\section{Mã nguồn Backend (PHP)}
+Các file \code{PHP} xử lý các yêu cầu từ \file{ESP32} và giao diện web, quản lý cơ sở dữ liệu \code{MySQL}.
+\subsection{Các file chính trong TH\_DO\_AN/}
+\lstinputlisting[style=codePHP]{"Code/TH_DO_AN/post_data.php"} % Thay bằng tên file thực tế của bạn
+\lstinputlisting[style=codePHP]{"Code/TH_DO_AN/get_current_data.php"} % Thay bằng tên file thực tế của bạn
+\lstinputlisting[style=codePHP]{"Code/TH_DO_AN/get_history_data.php"} % Thay bằng tên file thực tế của bạn
+\lstinputlisting[style=codePHP]{"Code/TH_DO_AN/test_db.php"} % Thay bằng tên file thực tế của bạn
+\lstinputlisting[style=codePHP]{"Code/TH_DO_AN/db_connect.php"} % Thay bằng tên file thực tế của bạn
+\lstinputlisting[style=codePHP]{"Code/TH_DO_AN/app_config.php"} % Thay bằng tên file thực tế của bạn
+
+\subsection{Các file API trong TH\_DO\_AN/api/}
+\lstinputlisting[style=codePHP]{"Code/TH_DO_AN/api/get_devices.php"} % Thay bằng tên file thực tế của bạn
+\lstinputlisting[style=codePHP]{"Code/TH_DO_AN/api/export_data_csv.php"} % Thay bằng tên file thực tế của bạn
+\lstinputlisting[style=codePHP]{"Code/TH_DO_AN/api/save_alert_thresholds.php"} % Thay bằng tên file thực tế của bạn
+\lstinputlisting[style=codePHP]{"Code/TH_DO_AN/api/save_email_settings.php"} % Thay bằng tên file thực tế của bạn
+\lstinputlisting[style=codePHP]{"Code/TH_DO_AN/api/save_update_frequency.php"} % Thay bằng tên file thực tế của bạn
+\lstinputlisting[style=codePHP]{"Code/TH_DO_AN/api/get_alert_thresholds.php"} % Thay bằng tên file thực tế của bạn
+\lstinputlisting[style=codePHP]{"Code/TH_DO_AN/api/get_dht_status.php"} % Thay bằng tên file thực tế của bạn
+\lstinputlisting[style=codePHP]{"Code/TH_DO_AN/api/toggle_dht_status.php"} % Thay bằng tên file thực tế của bạn
+
+\subsection{Các file API người dùng trong Login/api/users/}
+\lstinputlisting[style=codePHP]{"Code/Login/api/users/check_login.php"} % Thay bằng tên file thực tế của bạn
+\lstinputlisting[style=codePHP]{"Code/Login/api/users/login.php"} % Thay bằng tên file thực tế của bạn
+\lstinputlisting[style=codePHP]{"Code/Login/api/users/logout.php"} % Thay bằng tên file thực tế của bạn
+\lstinputlisting[style=codePHP]{"Code/Login/api/users/register.php"} % Thay bằng tên file thực tế của bạn
+
+\section{Mã nguồn Frontend (HTML/CSS/JavaScript)}
+Các file xây dựng giao diện người dùng web.
+\subsection{Các file chính trong TH\_DO\_AN/}
+\lstinputlisting[style=codeHTML]{"Code/TH_DO_AN/index.php"} % Nếu index.php chứa HTML và PHP, sử dụng codeHTML
+\lstinputlisting[style=plaintext]{"Code/TH_DO_AN/main.css"} % Style plaintext cho CSS
+\lstinputlisting[style=codeJavaScript]{"Code/TH_DO_AN/main.js"} % Style codeJavaScript
+\lstinputlisting[style=codeHTML]{"Code/TH_DO_AN/dashboard_template.html"} % Style codeHTML
+
+\subsection{Các file trong Login/}
+\lstinputlisting[style=codeHTML]{"Code/Login/login_register.html"} % Style codeHTML
+\lstinputlisting[style=plaintext]{"Code/Login/auth_styles.css"} % Style plaintext
+\lstinputlisting[style=codeJavaScript]{"Code/Login/auth_script.js"} % Style codeJavaScript
+
+% Bạn có thể thêm các file code ví dụ khác nếu cần
+% \section{Ví dụ liệt kê code ngôn ngữ C/C++}
+% Code tính khoảng thời gian giữa hai thời điểm cho trước.
+% \lstinputlisting[style=codeC]{"Code/TimeDiff.cpp"} 
+
+% \section{Ví dụ liệt kê code ngôn ngữ Python}
+% Code tính mã hash của một file.
+% \lstinputlisting[style=codePython]{"Code/Hash.py"}

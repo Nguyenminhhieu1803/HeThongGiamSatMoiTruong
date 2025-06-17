@@ -1,0 +1,301 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Báo cáo Hệ thống Giám sát Môi trường
+% LaTeX Template
+% Phiên bản 1.0 (tạo ra ngày 05/10/2022)
+%
+% Template này có thể được download tại:
+% https://github.com/cpc1996/HUS-Dissertation-Template
+%
+% Phiên bản 1.0 được chỉnh sửa bởi:
+% Công Phương Cao (congphuongcao@gmail.com)
+% Nguyễn Cảnh Việt (vietncp@gmail.com)
+%
+% Template được tham khảo từ một phiên bản template của:
+% Steve Gunn (http://users.ecs.soton.ac.uk/srg/softwaretools/document/templates/)
+% Sunil Patel (http://www.sunilpatel.co.uk/thesis-template/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%----------------------------------------------------------------------------------------
+%	(KHÔNG CHỈNH SỬA PHẦN NÀY)
+%
+%	PHẦN 1: CÁC PACKAGE CƠ BẢN VÀ CÁC TÙY CHỈNH VĂN BẢN
+%----------------------------------------------------------------------------------------
+
+\documentclass[
+12pt,
+oneside,
+english,
+doublespacing,
+nolistspacing,
+liststotoc,
+parskip,
+headsepline,
+chapterinoneline,
+]{HUSdissertation}
+
+% \usepackage{siunitx} % Đã chú thích gói này để khắc phục lỗi \SI và \si
+
+% Cấu hình tiếng Việt và Font
+\usepackage{fontspec} % Gói để sử dụng font hệ thống
+\setmainfont{Times New Roman} % Đặt font chính là Times New Roman
+\setsansfont{Arial} % Tùy chọn: đặt font sans-serif là Arial
+\setmonofont{Consolas} % Tùy chọn: đặt font monospace (cho code) là Consolas hoặc Courier New
+
+% % Các gói font cũ hơn (đã chú thích để tránh xung đột với fontspec và tiếng Việt)
+% \usepackage[utf8]{inputenc} % Đã chú thích để tránh cảnh báo khi dùng XeLaTeX/LuaLaTeX
+% \usepackage[utf8]{vietnam}  % Đã chú thích để tránh xung đột và dùng fontspec/babel
+% %\usepackage[T1]{fontenc}
+% \usepackage{mathptmx} % Đã chú thích để tránh xung đột với Times New Roman từ fontspec
+
+\usepackage{amsmath} % Hỗ trợ công thức toán học
+\allowdisplaybreaks
+
+% https://www.overleaf.com/learn/latex/Biblatex_citation_styles
+\usepackage[backend=biber,style=numeric,citestyle=ieee,natbib=true]{biblatex} % Sử dụng biber cho unicode và tính năng hiện đại
+
+\addbibresource{main.bib}
+
+\usepackage[autostyle=true]{csquotes}
+
+
+%----------------------------------------------------------------------------------------
+%	PHẦN 2: CÁC PACKAGE BỔ TRỢ THÊM VÀO TRONG QUÁ TRÌNH BIÊN SOẠN
+%----------------------------------------------------------------------------------------
+
+\RequirePackage{setlst}		% Liệt kê/trích dẫn code
+
+\usepackage{multirow}
+\usepackage{subfigure}
+\usepackage[fontsize=13pt]{scrextend}
+
+%https://www.sascha-frank.com/latex-font-size.html
+%https://tex.stackexchange.com/questions/103286/how-to-change-section-subsection-font-size
+\usepackage{titlesec}
+
+\titleformat{\section}
+{\normalfont\fontsize{13}{13}\bfseries}{\thesection}{1em}{}
+
+\titleformat{\subsection}
+{\normalfont\fontsize{13}{13}\bfseries\itshape}{\thesubsection}{1em}{}
+
+%https://tex.stackexchange.com/questions/351961/how-to-indent-code-in-beginverbatim
+\usepackage{fancyvrb} 		% Fancy Verbatim
+\fvset{tabsize=4,vspace=0pt,fontsize=\footnotesize}
+
+\usepackage{longtable} 		% Bảng dài - Long table
+
+\usepackage[figuresright]{rotating} % Bảng ngang - Sideways table 
+\usepackage{tabularx}
+
+\usepackage{fontawesome5} 	% Các biểu tượng, ký hiệu đặc biệt
+
+\usepackage{tikz} 			% Vẽ hình
+\usetikzlibrary{calc}
+
+\usepackage{indentfirst}	% Lùi đầu dòng ở đầu đoạn văn
+\setlength{\parindent}{0.5cm}
+
+% Định nghĩa một số lệnh cần thiết để điều chỉnh định dạng cho một số nội dung nhất định
+% (Đã di chuyển từ Chapter1.tex để toàn bộ tài liệu có thể sử dụng)
+\newcommand{\keyword}[1]{\textbf{#1}}
+\newcommand{\tabhead}[1]{\textbf{#1}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\file}[1]{\texttt{\bfseries#1}}
+\newcommand{\option}[1]{\texttt{\itshape#1}}
+
+%----------------------------------------------------------------------------------------
+%	PHẦN 3: THÔNG TIN VỀ BÁO CÁO HỆ THỐNG GIÁM SÁT MÔI TRƯỜNG
+%----------------------------------------------------------------------------------------
+
+\author{Nguyễn Minh Hiếu} % Tên của bạn hoặc nhóm thực hiện
+\thesistitle{HỆ THỐNG GIÁM SÁT CHẤT LƯỢNG MÔI TRƯỜNG THÔNG MINH SỬ DỤNG CÔNG NGHỆ IOT} % Tên báo cáo của bạn
+
+\supervisor {PGS. TS. Nguyễn Bách Khoa} % Giảng viên hướng dẫn 1
+\supervisorr{} % Để trống nếu không có GVHD 2
+
+% Khai báo mới cho "Chuyên ngành" và "Khóa"
+\NewDocumentCommand{\specialty}{m}{\newcommand{\specialtyname}{#1}}
+\NewDocumentCommand{\course}{m}{\newcommand{\coursename}{#1}}
+
+\field{Ngành Kĩ thuật Điện tử và Tin học} % Tên ngành đào tạo
+\program{Chương trình đào tạo Chuẩn} % Tên chương trình đào tạo
+\doctype{ĐỒ ÁN CHUYÊN NGÀNH} % Đã thay đổi thành "ĐỒ ÁN CHUYÊN NGÀNH"
+% \newcommand{\docname}{\doctype} % Đã xóa dòng này để tránh lỗi "Command \docname already defined."
+
+% Điền thông tin cho chuyên ngành và khóa
+\specialty{Khoa học dữ liệu} % Tên chuyên ngành của bạn (ví dụ từ ảnh mẫu)
+\course{2020} % Khóa học của bạn (ví dụ từ ảnh mẫu)
+
+\university{\href{https://www.vnu.edu.vn/home/}{Trường Đại học Khoa học Tự nhiên}}
+\department{\href{http://hus.vnu.edu.vn/gioi-thieu/co-cau-to-chuc/khoa-truc-thuoc/khoa-vat-ly.html}{Khoa Vật Lí}} % Thay đổi thành khoa của bạn
+
+\AtBeginDocument{
+	\hypersetup{pdftitle=\ttitle}
+	\hypersetup{pdfauthor=\authorname}
+}
+
+
+\begin{document}
+	
+	\lstset{style=codeC}	% Thiết lập ngôn ngữ C/C++ là ngôn ngữ mặc định cho phần liệt kê souce code 
+	
+	\frontmatter 			% Sử dụng hệ thống đánh số La Mã (i, ii, iii, iv...) cho những trang trước phần mục lục
+	
+	\pagestyle{plain} 
+	
+	
+	%----------------------------------------------------------------------------------------
+	%	(KHÔNG CHỈNH SỬA PHẦN NÀY)
+	%
+	%	PHẦN 4: TRANG TIÊU ĐỀ/TRANG BÌA (TITLE PAGE)
+	%----------------------------------------------------------------------------------------
+	
+	% TRANG BÌA CHÍNH:
+	\include{main-cover}
+	
+	% TRANG BÌA PHỤ:
+	\include{sub-cover}
+	
+	
+	%----------------------------------------------------------------------------------------
+	%	PHẦN 5: DANH NGÔN (QUOTES)
+	%----------------------------------------------------------------------------------------
+	
+	\vspace*{0.2\textheight}
+	
+	\noindent\enquote{\itshape 
+		Cái tôi và sự hiểu biết tỷ lệ nghịch với nhau. Hiểu biết càng nhiều cái tôi càng bé. Hiểu biết càng ít, cái tôi càng to.
+	}\bigbreak
+	
+	\hfill Albert Einstein
+	
+	
+	%----------------------------------------------------------------------------------------
+	%	PHẦN 6: LỜI CẢM ƠN (ACKNOWLEDGEMENTS)
+	%----------------------------------------------------------------------------------------
+	
+	\begin{acknowledgements}
+		\addchaptertocentry{\acknowledgementname}
+		\thispagestyle{empty}
+		Lời cảm ơn chân thành đến thầy/cô hướng dẫn, gia đình, bạn bè và những người đã hỗ trợ tôi trong quá trình thực hiện báo cáo này. Đặc biệt, tôi xin bày tỏ lòng biết ơn sâu sắc đến [Tên Giảng viên Hướng dẫn] đã tận tình chỉ bảo và truyền đạt kiến thức quý báu, giúp tôi hoàn thành nghiên cứu này.
+	\end{acknowledgements}
+	
+	
+	%----------------------------------------------------------------------------------------
+	%	(KHÔNG CHỈNH SỬA PHẦN NÀY)
+	%
+	%	PHẦN 7: MỤC LỤC (LIST OF CONTENTS/FIGURES/TABLES PAGES)
+	%----------------------------------------------------------------------------------------
+	
+	\begin{spacing}{1.15}
+		\tableofcontents 	% In ra mục lục chính
+	\end{spacing}
+	
+	\begin{spacing}{1.15}
+		\listoffigures 		% In ra danh sách hình vẽ
+	\end{spacing}
+	
+	\begin{spacing}{1.15}
+		\listoftables		% In ra danh sách bảng
+	\end{spacing}
+	
+	
+	%----------------------------------------------------------------------------------------
+	%	PHẦN 8: DANH SÁCH TÊN VIẾT TẮT (ABBREVIATIONS)
+	%----------------------------------------------------------------------------------------
+	
+	\begin{abbreviations}{ll} % Thêm danh sách tên viết tắt (dưới dạng một bảng có 2 cột)
+		
+		\textbf{IoT} & \textbf{I}nternet \textbf{o}f \textbf{T}hings \\
+		\textbf{MCU} & \textbf{M}icro\textbf{c}ontroller \textbf{U}nit \\
+		\textbf{API} & \textbf{A}pplication \textbf{P}rogramming \textbf{I}nterface \\
+		\textbf{PM2.5} & \textbf{P}articulate \textbf{M}atter 2.5 \\
+		\textbf{AQI} & \textbf{A}ir \textbf{Q}uality \textbf{I}ndex \\
+		\textbf{DHT} & \textbf{D}igital \textbf{H}umidity and \textbf{T}emperature \\
+		\textbf{NTP} & \textbf{N}etwork \textbf{T}ime \textbf{P}rotocol \\
+		\textbf{HTTP} & \textbf{H}yper\textbf{T}ext \textbf{T}ransfer \textbf{P}rotocol \\
+		\textbf{JSON} & \textbf{J}ava\textbf{S}cript \textbf{O}bject \textbf{N}otation \\
+		\textbf{PHP} & \textbf{P}HP: \textbf{H}ypertext \textbf{P}reprocessor \\
+		\textbf{MySQL} & \textbf{M}y\textbf{S}tructured \textbf{Q}uery \textbf{L}anguage \\
+		\textbf{CSS} & \textbf{C}ascading \textbf{S}tyle \textbf{S}heets \\
+		\textbf{JS} & \textbf{J}ava\textbf{S}cript \\
+		\textbf{XAMPP} & \textbf{X}-platform \textbf{A}pache \textbf{M}ySQL \textbf{P}HP \textbf{P}erl \\
+		
+	\end{abbreviations}
+	
+	
+	% Trong PHẦN 9: CÁC THÔNG SỐ KỸ THUẬT QUAN TRỌNG
+	\begin{constants}{lr@{${}={}$}l}
+		Điện áp hoạt động & $V_{op}$ & 5 V \\
+		Dải nhiệt độ DHT11 & $T_{range}$ & 0 đến 50 \textdegree C \\
+		Dải độ ẩm DHT11 & $H_{range}$ & 20\% đến 90\% \\
+		Tần suất cập nhật mặc định & $f_{update}$ & 30 giây \\
+	\end{constants}
+	
+	% Trong PHẦN 10: DANH SÁCH KÝ HIỆU
+	\begin{symbols}{lll}
+		$T$		& Nhiệt độ		& \textdegree C \\
+		$H$		& Độ ẩm			& \% \\
+		$V_{in}$ & Điện áp đầu vào & V \\
+		$I_{out}$ & Dòng điện đầu ra & A \\
+		$t_{stamp}$ & Thời gian cập nhật & giây \\
+	\end{symbols}
+	
+	
+	%----------------------------------------------------------------------------------------
+	%	(KHÔNG CHỈNH SỬA PHẦN NÀY)
+	%
+	%	PHẦN 11: LỜI ĐỀ TẶNG (DEDICATION)
+	%----------------------------------------------------------------------------------------
+	
+	%\dedicatory{Dành tặng/Dành cho/Gửi tới\ldots} 
+	
+	
+	%----------------------------------------------------------------------------------------
+	%	PHẦN 12: NỘI DUNG/CÁC CHƯƠNG BÁO CÁO (THESIS CONTENT - CHAPTERS)
+	%----------------------------------------------------------------------------------------
+	
+	\mainmatter % Bắt đầu đánh số trang (1,2,3...)
+	
+	\pagestyle{plain}
+	
+	% Hãy thêm những chương (chapter) của báo cáo vào thư mục Chapters
+	% Hãy bỏ chú thích những dòng nếu bạn đã bổ sung những chương vào
+	
+	\include{Chapters/Chapter0}
+	\include{Chapters/Chapter1}
+	%\include{Chapters/Chapter2} 
+	%\include{Chapters/Chapter3}
+	%\include{Chapters/Chapter4} 
+	%\include{Chapters/Chapter5} 
+	
+	
+	%----------------------------------------------------------------------------------------
+	%	(KHÔNG CHỈNH SỬA PHẦN NÀY)
+	%
+	%	PHẦN 13: TÀI LIỆU THAM KHẢO
+	%----------------------------------------------------------------------------------------
+	
+	\begin{spacing}{1.15}
+		\printbibliography[heading=bibintoc, title=Tài liệu tham khảo] % In ra tài liệu tham khảo
+	\end{spacing}
+	
+	
+	%----------------------------------------------------------------------------------------
+	%	PHẦN 14: PHỤ LỤC (THESIS CONTENT - APPENDICES)
+	%----------------------------------------------------------------------------------------
+	
+	\appendix % Nói với LaTeX rằng những chương về sau được tính là phụ lục
+	
+	% Hãy thêm những phụ lục (appendix) của báo cáo vào thư mục Appendices
+	% Hãy bỏ chú thích những dòng nếu bạn đã bổ sung những phụ lục vào
+	
+	\include{Appendices/AppendixA}
+	\include{Appendices/AppendixB}
+	%\include{Appendices/AppendixC}
+	
+	%----------------------------------------------------------------------------------------
+	
+\end{document}

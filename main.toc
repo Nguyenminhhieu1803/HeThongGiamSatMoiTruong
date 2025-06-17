@@ -1,0 +1,23 @@
+\babel@toc {english}{}\relax 
+\contentsline {chapter}{Acknowledgements}{ii}{section*.1}%
+\contentsline {chapter}{List of Figures}{iv}{chapter*.3}%
+\contentsline {chapter}{List of Tables}{v}{chapter*.4}%
+\contentsline {chapter}{List of Abbreviations}{vi}{chapter*.5}%
+\contentsline {chapter}{Physical Constants}{vii}{chapter*.6}%
+\contentsline {chapter}{List of Symbols}{viii}{chapter*.7}%
+\contentsline {chapter}{MỞ ĐẦU}{1}{chapter*.8}%
+\contentsline {chapter}{\numberline {1}TỔNG QUAN VỀ HỆ THỐNG GIÁM SÁT NHIỆT ĐỘ VÀ ĐỘ ẨM}{2}{chapter.9}%
+\contentsline {section}{\numberline {1.1}Bối cảnh và sự cần thiết của giám sát môi trường trong nhà}{2}{section.10}%
+\contentsline {section}{\numberline {1.2}Mục tiêu của hệ thống}{2}{section.11}%
+\contentsline {section}{\numberline {1.3}Các thành phần chính của hệ thống}{3}{section.12}%
+\contentsline {subsection}{\numberline {1.3.1}Phần cứng}{3}{subsection.13}%
+\contentsline {subsection}{\numberline {1.3.2}Phần mềm}{4}{subsection.14}%
+\contentsline {chapter}{\numberline {A}LIỆT KÊ SOURCE CODE}{6}{appendix.15}%
+\contentsline {section}{\numberline {A.1}Mã nguồn Firmware ESP32}{6}{section.16}%
+\contentsline {section}{\numberline {A.2}Mã nguồn Backend (PHP)}{10}{section.244}%
+\contentsline {subsection}{\numberline {A.2.1}Các file chính trong TH\_DO\_AN/}{10}{subsection.245}%
+\contentsline {subsection}{\numberline {A.2.2}Các file API trong TH\_DO\_AN/api/}{18}{subsection.748}%
+\contentsline {subsection}{\numberline {A.2.3}Các file API người dùng trong Login/api/users/}{31}{subsection.1481}%
+\contentsline {section}{\numberline {A.3}Mã nguồn Frontend (HTML/CSS/JavaScript)}{35}{section.1724}%
+\contentsline {subsection}{\numberline {A.3.1}Các file chính trong TH\_DO\_AN/}{36}{subsection.1725}%
+\contentsline {subsection}{\numberline {A.3.2}Các file trong Login/}{75}{subsection.4124}%

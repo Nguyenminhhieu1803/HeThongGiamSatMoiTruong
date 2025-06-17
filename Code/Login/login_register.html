@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Nhập / Đăng Ký</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="auth_styles.css"> </head>
+<body>
+    <div class="auth-wrapper">
+        <form action="#" class="auth-form" id="login-form">
+            <h1 class="form-title">Đăng Nhập</h1>
+
+            <div class="input-group">
+                <i class='bx bxs-user'></i>
+                <input type="text" id="username-login" placeholder="Tên đăng nhập" required>
+            </div>
+            <div class="input-group">
+                <i class='bx bxs-lock-alt'></i>
+                <input type="password" id="password-login" placeholder="Mật khẩu" required>
+            </div>
+
+            <div class="remember-forgot-box">
+                <label>
+                    <input type="checkbox" id="remember-me">
+                    Ghi nhớ đăng nhập
+                </label>
+                <a href="#" class="forgot-password-link">Quên mật khẩu?</a>
+            </div>
+
+            <button type="submit" class="auth-btn" id="login-submit-btn">Đăng Nhập</button>
+            <p class="auth-switch">
+                Chưa có tài khoản?
+                <a href="#" id="show-register-form-link">Đăng ký</a>
+            </p>
+            <p id="login-status-message" class="status-message"></p>
+        </form>
+
+        <form action="#" class="auth-form hidden" id="register-form">
+            <h1 class="form-title">Đăng Ký</h1>
+
+            <div class="input-group">
+                <i class='bx bxs-user'></i>
+                <input type="text" id="username-register" placeholder="Tên đăng nhập" required>
+            </div>
+            <div class="input-group">
+                <i class='bx bxs-lock-alt'></i>
+                <input type="password" id="password-register" placeholder="Mật khẩu" required>
+            </div>
+            <div class="input-group">
+                <i class='bx bxs-lock-alt'></i>
+                <input type="password" id="confirm-password-register" placeholder="Xác nhận mật khẩu" required>
+            </div>
+
+            <button type="submit" class="auth-btn" id="register-submit-btn">Đăng Ký</button>
+            <p class="auth-switch">
+                Đã có tài khoản?
+                <a href="#" id="show-login-form-link">Đăng nhập</a>
+            </p>
+            <p id="register-status-message" class="status-message"></p>
+        </form>
+    </div>
+
+    <script src="auth_script.js"></script> </body>
+</html>

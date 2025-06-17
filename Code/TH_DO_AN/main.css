@@ -1,0 +1,753 @@
+html {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    width: 100vw; /* Chiếm đúng 100% chiều rộng khung nhìn */
+    overflow-x: hidden; /* NGĂN THANH CUỘN NGANG */
+    background-color: #f8f9fa;
+    color: #495057;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    /* box-sizing: border-box; // Đã được xử lý bởi * selector */
+}
+
+/* Các biến Font Awesome (nếu bạn sử dụng Font Awesome) */
+:root {
+    --fa-style-family-brands: 'Font Awesome 6 Brands';
+    --fa-font-brands: normal 400 1em/1 'Font Awesome 6 Brands';
+    --fa-font-regular: normal 400 1em/1 'Font Awesome 6 Free';
+    --fa-style-family-classic: 'Font Awesome 6 Free';
+    --fa-font-solid: normal 900 1em/1 'Font Awesome 6 Free';
+}
+
+/* Trong main.css */
+
+header {
+    /* Các thuộc tính background lấy từ đoạn bạn cung cấp */
+    background: url(Images/bg_menu-scaled.jpg) no-repeat center; /* Đảm bảo đường dẫn ảnh cục bộ của bạn là đúng */
+    background-size: 100%; /* Sửa đổi: Đặt kích thước nền là 100% */
+    /* background-position: center center; // Giữ nguyên nếu bạn muốn ảnh nền được căn giữa */
+    /* background-repeat: no-repeat; // Đã bao gồm trong shorthand 'background' */
+
+    /* Các thuộc tính khác lấy từ đoạn bạn cung cấp */
+    color: #444; /* Sửa đổi: Màu chữ tổng thể của header */
+    /* font: 14px "roboto" !important; // Cẩn thận với !important, có thể gây khó khăn khi debug */
+    /* Nếu bạn muốn áp dụng font này cho toàn bộ header, hãy thêm vào đây */
+    font-family: "roboto", sans-serif;
+    font-size: 14px;
+
+    /* Các thuộc tính giữ nguyên từ cấu hình trước đó của bạn để duy trì bố cục Flexbox */
+    padding: 0.8rem 20px;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    width: 100vw; /* Đảm bảo header chiếm đúng 100% chiều rộng khung nhìn */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    /* Các thuộc tính dành riêng cho webkit (mobile/trình duyệt cụ thể) */
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+
+    /* box-sizing: border-box; // Đã được xử lý bởi * selector */
+    /* display: block; // Header đã là display:flex, không cần đổi thành block */
+}
+
+/* Container chính bao bọc 1/3 và 2/3 */
+.header-content-wrapper {
+    display: flex; /* Biến nó thành Flex container ngang */
+    width: 100%; /* Chiếm toàn bộ chiều rộng của header */
+    align-items: flex-start; /* Căn chỉnh nội dung lên phía trên của các cột */
+    padding: 10px 0; /* Khoảng cách bên trong wrapper */
+}
+
+/* Khu vực 1 TRÁI (1/3), trống */
+.header-left-empty {
+    flex: 0 0 33.33%; /* Không co (0), không giãn (0), chiếm đúng 1/3 chiều rộng */
+    /* background-color: rgba(255, 0, 0, 0.05); /* Dùng để debug, sau đó xóa */ 
+    /* min-height: 50px; /* Bạn có thể cần thiết lập một chiều cao tối thiểu */ 
+}
+
+/* Khu vực 2 PHẢI (2/3), chứa auth-buttons và nav */
+.header-right-section {
+    flex: 1 1 66.67%; /* Co (1), giãn (1), chiếm 2/3 chiều rộng còn lại */
+    display: flex; /* Biến nó thành Flex container dọc */
+    flex-direction: column; /* Xếp chồng auth-buttons và nav */
+    align-items: flex-end; /* Căn chỉnh nội dung (auth-buttons và nav) sang phải */
+    /* background-color: rgba(0, 255, 0, 0.05); /* Dùng để debug, sau đó xóa */ 
+}
+
+#welcome-message {
+    color: white; 
+    margin-right: 10px;
+    white-space: nowrap; /* Đảm bảo văn bản không xuống dòng */
+    overflow: hidden; /* Rất quan trọng: Ẩn phần tràn của văn bản */
+    text-overflow: ellipsis; /* THÊM DÒNG NÀY: Để thêm dấu ... nếu văn bản quá dài */
+    max-width: calc(100% - 70px); /* Giới hạn chiều rộng tối đa của thông báo chào mừng
+                                       (100% của auth-buttons trừ đi khoảng 70px cho nút đăng xuất) */
+    display: block; /* Cần display: block hoặc inline-block để overflow và text-overflow hoạt động */
+}
+
+#username-display {
+    color: rgb(0, 0, 0); /* Màu chữ cho tên người dùng, làm nổi bật */
+    font-weight: bold;
+    font-size: 1rem; /* Điều chỉnh kích thước font cho phù hợp */
+}
+
+.auth-buttons {
+    display: flex;
+    justify-content: flex-end; /* Căn nội dung bên trong nó sang phải */
+    align-items: center;
+    width: 100%; /* Rất quan trọng: để nó kéo dài hết chiều rộng của header-right-section */
+    margin-bottom: 10px; /* Khoảng cách với menu nav bên dưới */
+    white-space: nowrap; /* Ngăn không cho chữ xuống dòng */
+}
+
+.auth-buttons button {
+    padding: 0.5rem 1rem;
+    margin-left: 0.5rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.auth-buttons button:first-child {
+    margin-left: 0;
+}
+
+.auth-buttons button:hover {
+    background-color: #0056b3;
+}
+
+nav#main-nav {
+    width: 100%; /* Quan trọng: để nó kéo dài hết chiều rộng của header-right-section */
+    background-color: rgba(255, 255, 255, 0.2); /* Nền cho menu */
+    border-radius: 5px;
+    padding: 5px 0;
+}
+
+nav#main-nav ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    justify-content: space-around; /* Chia đều các mục menu */
+    width: 100%; /* Đảm bảo ul kéo dài hết chiều rộng của nav */
+}
+
+nav#main-nav ul li {
+    margin: 0;
+}
+
+nav#main-nav ul li a {
+    color: black; /* Màu chữ cho các mục menu */
+    text-decoration: none;
+    transition: color 0.3s ease;
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 5px 10px; /* Thêm padding để dễ bấm */
+    display: block; /* Để padding hoạt động */
+}
+
+nav#main-nav ul li a:hover,
+nav#main-nav ul li.active a {
+    color: #f8c291; /* Màu khi hover hoặc active */
+    font-weight: bold;
+}
+
+/* === KẾT THÚC ĐIỀU CHỈNH CÁC QUY TẮC CŨ === */
+
+
+main {
+    padding: 20px;
+    flex-grow: 1;
+    max-width: 1200px;
+    width: 90%;
+    margin: 0 auto;
+}
+
+main section {
+    background-color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+h2, h3 {
+    color: #343a40;
+    margin-bottom: 15px;
+}
+
+.data-item {
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+.label {
+    font-weight: bold;
+    margin-right: 10px;
+    color: #343a40;
+}
+
+.value {
+    font-weight: normal;
+    color: #007bff;
+}
+
+.unit {
+    margin-left: 5px;
+    color: #6c757d;
+}
+
+.controls {
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+.controls label {
+    margin-right: 5px;
+    font-weight: bold;
+}
+
+.controls select, .controls input[type="date"] {
+    padding: 0.75rem;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+}
+
+.controls button {
+    padding: 0.75rem 1.5rem;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;   
+    transition: background-color 0.3s ease;
+}
+
+.controls button:hover {
+    background-color: #218838;
+}
+
+.alert-settings .setting-item, .setting-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.alert-settings input[type="number"], .setting-group input[type="number"],
+.alert-settings input[type="email"], #user-management input[type="text"],
+#user-management input[type="password"], .setting-group select {
+    padding: 0.75rem;
+    width: 250px;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    margin-bottom: 15px;
+}
+
+.alert-status .alert {
+    padding: 1rem;
+    margin-bottom: 10px;
+    border-radius: 0.25rem;
+    font-weight: bold;
+}
+
+.alert-status #temperature-alert {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.alert-status #humidity-alert {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.hidden-section {
+    display: none;
+}
+
+.active-section {
+    display: block;
+}
+
+#history-chart, /* Giữ nguyên #history-chart để nó được căn giữa cùng với #history-table */
+#history-table {
+    margin-top: 20px; /* Khoảng cách từ phần tử phía trên (ví dụ: biểu đồ) */
+    max-width: 900px; /* Giới hạn chiều rộng tối đa của container bảng */
+    margin-left: auto; /* CĂN GIỮA NỀN BẢNG THEO CHIỀU NGANG */
+    margin-right: auto; /* CĂN GIỮA NỀN BẢNG THEO CHIỀU NGANG */
+    padding: 15px; /* Khoảng cách bên trong container bảng */
+    border: 1px solid #ddd; /* Đường viền nhẹ cho container */
+    border-radius: 8px; /* Bo tròn góc */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Đổ bóng nhẹ */
+    background-color: #f8f9fa; /* Màu nền cho container bảng */
+}
+
+#user-management label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+#user-management button {
+    padding: 0.75rem 1.5rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+}
+
+#user-management button:hover {
+    background-color: #0056b3;
+}
+
+#device-management label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+#device-management select {
+    padding: 0.75rem;
+    width: 250px;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    margin-bottom: 15px;
+}
+
+footer {
+    text-align: center;
+    padding: 0.5rem 0;
+    background-color: #a1d4dc;
+    color: white;
+    border-radius: 0.25rem;
+    margin-top: 20px;
+    box-shadow: 0 -0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+/* CSS cho bố cục lưới của các widget dữ liệu hiện tại */
+.current-data-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px; 
+    margin-bottom: 20px;
+}
+
+.data-widget {
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.05);
+}
+
+.widget-header {
+    background-color: #1163d0;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.8rem;
+}
+
+.widget-content {
+    background-color: white;
+    padding: 40px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    flex-direction: row;
+}
+
+.data-value {
+    font-weight: bold;
+    color: #14f458;
+    font-size: 4rem;
+    margin-right: 5px;
+    margin-bottom: 0;
+}
+
+.data-unit {
+    color: #000000;
+    font-size: 2rem;
+}
+
+/* Điều chỉnh kiểu dáng cho mục timestamp  */
+.timestamp-item {
+    font-size: 1rem;
+    color: #495057;
+    text-align: center;
+}
+
+.timestamp-item .label {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.timestamp-item .value {
+    font-weight: normal;
+    color: #6c757d;
+}
+
+/* ==================================== */
+/* Styles for History Chart Section */
+/* ==================================== */
+
+#history-chart {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#temperatureHumidityChart {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Styles cho thông báo khi không có dữ liệu */
+.no-data-message, .error-message {
+    text-align: center;
+    color: #555;
+    font-size: 1.1em;
+    padding: 20px;
+}
+
+.error-message {
+    color: red;
+    font-weight: bold;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Optional: Media Queries for better responsiveness */
+@media (max-width: 768px) {
+    header {
+        padding: 0.5rem 10px;
+    }
+
+    /* Đảm bảo vẫn là flex-direction: row để giữ trên cùng một hàng */
+    .header-content-wrapper { /* SỬA CÁI NÀY THAY VÌ .header-top */
+        flex-direction: column; /* Xếp chồng các cột 1/3 và 2/3 */
+        align-items: flex-start;
+    }
+
+    .header-left-empty {
+        /* Bỏ flex: 0 0 33.33%; để nó không chiếm không gian trên mobile */
+        flex: auto; /* Cho phép nó co giãn */
+        width: 100%; /* Hoặc auto */
+        min-height: 0; /* Đảm bảo không chiếm chiều cao không cần thiết */
+    }
+
+    .header-right-section {
+        flex-direction: column; /* Xếp chồng auth-buttons và nav */
+        align-items: center; /* Căn giữa auth-buttons và nav */
+        width: 100%; /* Chiếm toàn bộ chiều rộng */
+        flex: auto; /* Cho phép co giãn */
+    }
+
+    .auth-buttons {
+        margin-top: 10px;
+        width: 100%;
+        justify-content: center; /* Căn giữa trên mobile */
+    }
+
+    nav#main-nav {
+        width: 100%;
+        margin-left: 0;
+        margin-top: 10px;
+    }
+
+    nav#main-nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    nav#main-nav ul li {
+        margin-bottom: 10px;
+    }
+
+    main {
+        width: 95%; /* Mở rộng main trên màn hình nhỏ */
+        padding: 10px;
+    }
+
+    .current-data-grid {
+        grid-template-columns: 1fr; /* Stack columns on small screens */
+        gap: 20px; /* Giảm gap cho màn hình nhỏ */
+    }
+
+    .widget-content {
+        padding: 20px; /* Giảm padding cho nội dung widget */
+    }
+
+    .data-value, .data-unit {
+        font-size: 3rem; /* Giảm kích thước font cho giá trị và đơn vị */
+    }
+
+    .controls {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .controls select, .controls input[type="date"], .controls button {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    .alert-settings input[type="number"], .setting-group input[type="number"],
+    .alert-settings input[type="email"], #user-management input[type="text"],
+    #user-management input[type="password"], .setting-group select,
+    #device-management select {
+        width: 100%;
+    }
+}
+
+.settings-grid {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.settings-grid .setting-group {
+    flex: 1;
+    min-width: 280px;
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+/* Điều chỉnh thêm cho input và button trong setting-group để chúng hiển thị tốt hơn */
+.settings-grid .setting-group input[type="number"],
+.settings-grid .setting-group select {
+    width: calc(100% - 16px);
+    max-width: 250px;
+    box-sizing: border-box;
+}
+
+.settings-grid .setting-group button {
+    width: auto;
+    padding: 0.75rem 1.5rem;
+    margin-top: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.settings-grid .setting-group button:hover {
+    background-color: #0056b3;
+}
+
+#bottom-header {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    background: rgb(151, 221, 228);
+    color: white; 
+    padding: 1rem 20px; 
+    box-shadow: 0 -0.5rem 1rem rgba(0, 0, 0, 0.1);
+    min-height: 50px; 
+    margin-top: 20px; 
+}
+
+.bottom-header-content {
+    text-align: center; 
+    padding: 10px 0; 
+}
+
+#history-table {
+    display: block; /* Đảm bảo nó là một khối riêng biệt để nhận margin auto */
+    height: auto; /* Cho phép chiều cao tự động co giãn theo nội dung bảng */
+    overflow-x: auto; /* Rất quan trọng: Thêm thanh cuộn ngang nếu bảng quá rộng trên màn hình nhỏ */
+}
+
+/* Trong main.css (sau quy tắc #history-table hoặc gần đó) */
+#history-table h3 {
+    text-align: center; /* Căn giữa tiêu đề */
+    margin-bottom: 15px; /* Khoảng cách dưới tiêu đề */
+    color: #343a40; /* Màu chữ */
+}
+
+/* Trong main.css */
+
+.history-data-table { /* Đây là class bạn đang sử dụng cho thẻ <table> */
+    width: 100%; /* Đảm bảo bảng chiếm toàn bộ chiều rộng của #history-table container */
+    border-collapse: collapse; /* Gộp các đường biên của ô */
+    margin-top: 20px; /* Khoảng cách từ tiêu đề "Dữ liệu thô" (nếu có) */
+    font-size: 0.9rem; /* Điều chỉnh kích thước font cho toàn bộ bảng */
+}
+
+/* Định dạng tiêu đề cột (<th>) và ô dữ liệu (<td>) */
+.history-data-table th, 
+.history-data-table td {
+    border: 1px solid #e9ecef; /* Màu đường biên nhạt hơn cho các ô */
+    padding: 12px 15px; /* Tăng padding để có thêm không gian giữa nội dung và đường biên */
+    text-align: center; /* CĂN GIỮA NỘI DUNG TRONG TẤT CẢ CÁC Ô (TH VÀ TD) */
+    white-space: nowrap; /* Ngăn thời gian/số liệu xuống dòng, giúp bảng gọn hơn (sẽ có cuộn ngang nếu tràn) */
+}
+
+/* Định dạng riêng cho hàng tiêu đề của bảng */
+.history-data-table th {
+    background-color: #f1f3f5; /* Nền header bảng */
+    font-weight: bold; /* Chữ đậm */
+    color: #495057; /* Màu chữ header */
+    text-transform: uppercase; /* Chữ hoa cho tiêu đề */
+    letter-spacing: 0.05em; /* Khoảng cách giữa các chữ cái */
+}
+
+/* Định dạng riêng cho các ô dữ liệu */
+.history-data-table td {
+    color: #343a40; /* Màu chữ mặc định cho ô dữ liệu */
+}
+
+/* Thay đổi màu nền cho các hàng chẵn để dễ đọc hơn (striped rows) */
+.history-data-table tbody tr:nth-child(even) {
+    background-color: #f8f9fa; 
+}
+
+/* Thay đổi màu nền khi di chuột qua một hàng */
+.history-data-table tbody tr:hover {
+    background-color: #e2e6ea; 
+}
+
+/* Điều chỉnh độ rộng tương đối của từng cột (có thể tinh chỉnh lại các giá trị % này) */
+.history-data-table th:nth-child(1), /* Cột Thời gian */
+.history-data-table td:nth-child(1) {
+    width: 35%; 
+}
+.history-data-table th:nth-child(2), /* Cột Nhiệt độ */
+.history-data-table td:nth-child(2) {
+    width: 30%; 
+}
+.history-data-table th:nth-child(3), /* Cột Độ ẩm */
+.history-data-table td:nth-child(3) {
+    width: 35%; 
+}
+
+/* Để bố cục "Chọn thiết bị" và "Điều khiển Cảm biến DHT" trên cùng một hàng */
+.current-data-header-controls {
+    display: flex;
+    justify-content: space-between; /* Đẩy các phần tử ra hai bên */
+    align-items: flex-end; /* Căn chỉnh các mục theo phía dưới */
+    margin-bottom: 20px; /* Thêm khoảng cách phía dưới nếu cần */
+    flex-wrap: wrap; /* Cho phép các phần tử xuống dòng trên màn hình nhỏ */
+}
+
+.device-selection-main {
+    flex: 1; /* Cho phép phần chọn thiết bị chiếm không gian */
+    max-width: 300px; /* Giới hạn chiều rộng để không quá lớn */
+    margin-right: 20px; /* Khoảng cách giữa hai phần tử */
+}
+
+.dht-toggle-control {
+    text-align: right; /* Căn nút sang phải trong khung của nó */
+}
+
+.dht-toggle-control h3 {
+    margin-bottom: 5px; /* Giảm khoảng cách giữa tiêu đề và nút */
+    font-size: 1em; /* Điều chỉnh kích thước tiêu đề nếu cần */
+    color: #555;
+}
+
+/* Styles cho nút bật/tắt */
+#toggleDhtButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    white-space: nowrap; /* Ngăn không cho chữ xuống dòng */
+}
+
+#toggleDhtButton.dht-on {
+    background-color: #28a745; /* Màu xanh lá cây cho trạng thái bật */
+    color: white;
+}
+
+#toggleDhtButton.dht-off {
+    background-color: #dc3545; /* Màu đỏ cho trạng thái tắt */
+    color: white;
+}
+
+/* Optional: Media Queries for better responsiveness */
+@media (max-width: 768px) {
+    .current-data-header-controls {
+        flex-direction: column; /* Xếp chồng trên màn hình nhỏ */
+        align-items: flex-start;
+    }
+    .device-selection-main {
+        width: 100%; /* Chiếm toàn bộ chiều rộng */
+        max-width: none;
+        margin-right: 0;
+        margin-bottom: 15px; /* Khoảng cách giữa select và nút */
+    }
+    .dht-toggle-control {
+        width: 100%;
+        text-align: left; /* Căn trái trên mobile */
+    }
+    #toggleDhtButton {
+        width: 100%; /* Nút chiếm toàn bộ chiều rộng */
+    }
+}
+
+/* Trong main.css */
+
+/* Định nghĩa hiệu ứng nhấp nháy cho cảnh báo */
+@keyframes warning-glow {
+    0%, 100% {
+        box-shadow: 0 0 5px rgba(255, 0, 0, 0.5), /* Bóng mờ nhẹ ban đầu */
+                    0 0 5px rgba(255, 0, 0, 0.5) inset;
+        border-color: #1163d0; /* Màu viền bình thường của widget, hoặc màu bạn muốn */
+    }
+    50% {
+        box-shadow: 0 0 20px red, /* Bóng mờ mạnh hơn ở giữa chu kỳ */
+                    0 0 20px red inset;
+        border-color: red; /* Màu viền cảnh báo */
+    }
+}
+
+/* Class để áp dụng hiệu ứng cho các widget khi có cảnh báo */
+.data-widget.warning-active {
+    animation: warning-glow 1s infinite alternate; /* 'alternate' để animation mượt hơn */
+    /* Có thể thêm border-color ban đầu cho trạng thái cảnh báo nếu muốn nổi bật hơn */
+    border: 4px solid #1163d0; /* Giữ nguyên border hiện tại hoặc làm nó rõ ràng hơn */
+}
+
+/* Nếu bạn muốn widget chuyển sang màu nền cảnh báo (tùy chọn) */
+/* .data-widget.warning-active .widget-header {
+    background-color: red !important;
+} */

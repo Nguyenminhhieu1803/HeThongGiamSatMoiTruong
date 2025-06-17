@@ -1,0 +1,67 @@
+% Chương 1
+
+\chapter{TỔNG QUAN VỀ HỆ THỐNG GIÁM SÁT NHIỆT ĐỘ VÀ ĐỘ ẨM} % Tên của chương
+
+\label{Chapter1} % Để trích dẫn chương này ở chỗ nào đó trong bài, hãy sử dụng lệnh \ref{Chapter1} 
+
+%----------------------------------------------------------------------------------------
+
+\section{Bối cảnh và sự cần thiết của giám sát môi trường trong nhà}
+Chất lượng không khí trong nhà đóng vai trò vô cùng quan trọng đối với sức khỏe và năng suất làm việc của con người. Con người dành phần lớn thời gian trong nhà, nơi chất lượng không khí có thể bị ảnh hưởng bởi nhiều yếu tố như nhiệt độ, độ ẩm, và các chất ô nhiễm. Nhiệt độ và độ ẩm không phù hợp không chỉ gây khó chịu mà còn tạo điều kiện cho vi khuẩn, nấm mốc phát triển, ảnh hưởng tiêu cực đến hệ hô hấp và sức khỏe tổng thể. Do đó, việc giám sát liên tục và chính xác các thông số này là cần thiết để duy trì một môi trường sống và làm việc lành mạnh. Hệ thống giám sát tự động, đặc biệt là ứng dụng công nghệ IoT, mang đến giải pháp hiệu quả để thu thập dữ liệu, phân tích xu hướng và kịp thời đưa ra cảnh báo khi các chỉ số vượt ngưỡng an toàn.
+
+\section{Mục tiêu của hệ thống}
+Mục tiêu tổng quát của dự án là thiết kế và triển khai một hệ thống giám sát nhiệt độ và độ ẩm trong nhà một cách hiệu quả, dễ sử dụng và chi phí thấp, góp phần nâng cao chất lượng môi trường sống và làm việc.
+
+Các mục tiêu cụ thể bao gồm:
+\begin{itemize}
+	\item Thu thập dữ liệu nhiệt độ và độ ẩm theo thời gian thực từ cảm biến \keyword{DHT11}.
+	\item Xây dựng một giao diện web trực quan, cho phép người dùng dễ dàng theo dõi dữ liệu hiện tại, xem biểu đồ lịch sử và quản lý thiết bị.
+	\item Cho phép người dùng thiết lập các ngưỡng cảnh báo cho nhiệt độ và độ ẩm, và hiển thị trạng thái cảnh báo trực tiếp trên giao diện.
+	\item Cung cấp khả năng điều khiển bật/tắt chức năng đo của cảm biến thông qua giao diện web.
+	\item Hỗ trợ xuất dữ liệu lịch sử ra định dạng CSV để tiện cho việc phân tích chuyên sâu.
+\end{itemize}
+
+\section{Các thành phần chính của hệ thống}
+Hệ thống giám sát nhiệt độ và độ ẩm thông minh bao gồm các thành phần chính được phân loại thành phần cứng và phần mềm, cùng với luồng dữ liệu tương tác giữa chúng.
+
+\subsection{Phần cứng}
+\begin{itemize}
+	\item \textbf{Cảm biến DHT11}: Là loại cảm biến chính được sử dụng để đo nhiệt độ và độ ẩm môi trường. Cảm biến này có ưu điểm về chi phí thấp và dễ tích hợp.
+	\item \textbf{Bộ vi điều khiển ESP32}: Đóng vai trò là bộ não của hệ thống, \file{ESP32} chịu trách nhiệm đọc dữ liệu từ cảm biến \keyword{DHT11}, xử lý sơ bộ và truyền dữ liệu lên máy chủ thông qua kết nối Wi-Fi. \file{ESP32} cũng điều khiển các \keyword{LED} thông báo trạng thái hoạt động.
+	\item \textbf{Module Wi-Fi}: Tích hợp sẵn trong \file{ESP32}, được sử dụng để thiết lập kết nối không dây với mạng cục bộ, cho phép truyền dữ liệu đến máy chủ \keyword{localhost}.
+	\item \textbf{LED thông báo}:
+	\begin{itemize}
+		\item \textbf{LED hoạt động (màu xanh lá)}: Sáng liên tục khi cảm biến đang đo và gửi dữ liệu.
+		\item \textbf{LED cảnh báo (màu đỏ)}: Sẽ bật sáng khi nhiệt độ hoặc độ ẩm vượt quá ngưỡng đã thiết lập.
+	\end{itemize}
+	\item \textbf{Nguồn điện Adapter 5V}: Cung cấp năng lượng cho toàn bộ hệ thống phần cứng hoạt động.
+\end{itemize}
+
+\subsection{Phần mềm}
+\begin{itemize}
+	\item \textbf{Firmware (Nhúng trên ESP32)}:
+	\begin{itemize}
+		\item Ngôn ngữ lập trình: \code{C/C++} sử dụng \code{Arduino IDE}.
+		\item Chức năng: Đọc dữ liệu từ \keyword{DHT11}, đồng bộ thời gian thông qua \keyword{NTPClient} để gán \keyword{timestamp} chính xác cho dữ liệu, gửi yêu cầu \keyword{HTTP GET} đến \keyword{API} điều khiển, tạo gói dữ liệu \keyword{JSON} và gửi qua \keyword{HTTP POST} đến máy chủ. Firmware cũng điều khiển các \keyword{LED} thông báo trạng thái.
+	\end{itemize}
+	\item \textbf{Hệ thống Backend (Máy chủ cục bộ)}:
+	\begin{itemize}
+		\item Nền tảng: \code{XAMPP} (bao gồm \code{Apache} làm web server và \code{PHP} làm ngôn ngữ xử lý phía máy chủ).
+		\item Cơ sở dữ liệu: \code{MySQL} được sử dụng để lưu trữ dữ liệu nhiệt độ, độ ẩm, \keyword{timestamp} và \keyword{device\_id} trong bảng \code{sensor\_readings} và \code{device\_settings}.
+		\item Các \keyword{API} chính:
+		\begin{itemize}
+			\item \code{post\_data.php}: Nhận dữ liệu \keyword{JSON} từ \file{ESP32} và lưu vào \code{MySQL}.
+			\item \code{get\_dht\_status.php}, \code{toggle\_dht\_status.php}: Quản lý trạng thái bật/tắt cảm biến.
+			\item \code{save\_alert\_thresholds.php}, \code{get\_alert\_thresholds.php}: Quản lý các ngưỡng cảnh báo.
+			\item \code{get\_devices.php}: Cung cấp danh sách các thiết bị.
+			\item \code{get\_current\_data.php}, \code{get\_history\_data.php}: Cung cấp dữ liệu hiện tại và lịch sử.
+			\item \code{export\_data\_csv.php}: Xuất dữ liệu lịch sử ra \file{CSV}.
+		\end{itemize}
+	\end{itemize}
+	\item \textbf{Hệ thống Frontend (Giao diện người dùng web)}:
+	\begin{itemize}
+		\item Công nghệ: \code{HTML}, \code{CSS} và \code{JavaScript}.
+		\item Chức năng: Hiển thị dữ liệu nhiệt độ và độ ẩm theo thời gian thực dưới dạng thẻ lớn, biểu đồ lịch sử tương tác (sử dụng \code{Chart.js} và \code{Luxon}), trang cài đặt ngưỡng cảnh báo, và khả năng điều khiển bật/tắt cảm biến. Giao diện cũng hiển thị thông tin kỹ thuật về cảm biến \keyword{DHT11}.
+		\item Cảnh báo: Kích hoạt hiệu ứng nhấp nháy đỏ trên giao diện khi dữ liệu vượt ngưỡng.
+	\end{itemize}
+\end{itemize}
